@@ -26,21 +26,32 @@ namespace MobileSecurityPOC
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            var authType = await Plugin.Fingerprint.CrossFingerprint.Current.GetAuthenticationTypeAsync();
 
-            var authType= await Plugin.Fingerprint.CrossFingerprint.Current.GetAuthenticationTypeAsync();
-            if(authType==AuthenticationType.Fingerprint)
-            {
-                lblAuthenticationType.Text = "Auth Type: " + authType;
+            lblAuthenticationType.Text = "Auth Type: " + authType;
+        }
 
-                await AuthenticateAsync("Authendicate with fingerprint");
-            }
-           
+        async void Button_Clicked(System.Object sender, System.EventArgs e)
+        {
+            //var result = await CrossFingerprint.Current.GetAvailabilityAsync(true);
+            //var result1 = await CrossFingerprint.Current.IsAvailableAsync(true);
+            //var result2 = await CrossFingerprint.Current.GetAvailabilityAsync();
+            //var result3 = await CrossFingerprint.Current.IsAvailableAsync();
+
+            // DependencyService.Get<IBiometricAuthenticateService>().Authendicate();
+            await AuthenticateAsync("Authendicate with Touch ID");
+            //var authType = await Plugin.Fingerprint.CrossFingerprint.Current.GetAuthenticationTypeAsync();
+            //if (authType == AuthenticationType.Fingerprint)
+            //{
+            //    lblAuthenticationType.Text = "Auth Type: " + authType;
+
+            //    await AuthenticateAsync("Authendicate with Touch ID");
+            //}
         }
 
         private async Task AuthenticateAsync(string reason, string cancel = null, string fallback = null, string tooFast = null)
         {
-            _cancel = true ? new CancellationTokenSource(TimeSpan.FromSeconds(10)) : new CancellationTokenSource();
-            lblStatus.Text = "";
+            _cancel = false ? new CancellationTokenSource(TimeSpan.FromSeconds(10)) : new CancellationTokenSource();
             
             var dialogConfig = new AuthenticationRequestConfiguration("My App", reason)
             { 
@@ -59,7 +70,7 @@ namespace MobileSecurityPOC
         {
             if (result.Authenticated)
             {
-                await DisplayAlert("Success", "Finger print success", "OK");
+                await DisplayAlert("Success", "Fingerprint success", "OK");
                 lblStatus.Text = result.Status.ToString();
             }
             else
@@ -68,6 +79,7 @@ namespace MobileSecurityPOC
             }
         }
 
+        
         //async void Button_Clicked(System.Object sender, System.EventArgs e)
         //{
 

@@ -8,7 +8,7 @@
         <!--<Switch x:Name="swAutoCancel"></Switch>
          <Switch x:Name="swAllowAlternative"></Switch>
          <Switch x:Name="swConfirmationRequired" IsToggled="True"></Switch>-->
-         <!--<Button Text="Authenticate" Clicked="OnAuthenticate"></Button>
-        <Button Text="Authenticate localized" Clicked="OnAuthenticateLocalized"></Button>-->
+         <Button Text="Authenticate" Clicked="Button_Clicked"></Button>
+        <!--<Button Text="Authenticate localized" Clicked="OnAuthenticateLocalized"></Button>-->
     </StackLayout>
 </ContentPage>
