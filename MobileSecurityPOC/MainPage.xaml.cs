@@ -17,17 +17,16 @@ namespace MobileSecurityPOC
     public partial class MainPage : ContentPage
     {
         private CancellationTokenSource _cancel;
-
         public MainPage()
         {
             InitializeComponent();
         }
 
+        //Page Appearing
         protected override async void OnAppearing()
         {
             base.OnAppearing();
             var authType = await Plugin.Fingerprint.CrossFingerprint.Current.GetAuthenticationTypeAsync();
-
             lblAuthenticationType.Text = "Auth Type: " + authType;
         }
 
@@ -52,7 +51,6 @@ namespace MobileSecurityPOC
         private async Task AuthenticateAsync(string reason, string cancel = null, string fallback = null, string tooFast = null)
         {
             _cancel = false ? new CancellationTokenSource(TimeSpan.FromSeconds(10)) : new CancellationTokenSource();
-            
             var dialogConfig = new AuthenticationRequestConfiguration("My App", reason)
             { 
                 CancelTitle = cancel,
@@ -60,12 +58,12 @@ namespace MobileSecurityPOC
                 AllowAlternativeAuthentication = true,
                 ConfirmationRequired = false
             };
-
             dialogConfig.HelpTexts.MovedTooFast = tooFast;
             var result = await Plugin.Fingerprint.CrossFingerprint.Current.AuthenticateAsync(dialogConfig, _cancel.Token);
             await SetResultAsync(result);
         }
-
+        
+        // Set authentication Result
         private async Task SetResultAsync(FingerprintAuthenticationResult result)
         {
             if (result.Authenticated)
